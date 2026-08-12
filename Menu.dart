@@ -1,6 +1,8 @@
 import 'dart:io' show stdin, stdout ;
 import 'Eliminar.dart' as eliminar;
 import 'Listar.dart' as listar;
+import 'Agregar.dart' as agregar;
+import 'Actualizar.dart' as actualizar;
 
 void main() {
   List<Map<String, dynamic>> pelicula = [];
@@ -19,19 +21,19 @@ void main() {
 
     switch (opcion) {
       case 1:
-        agregarPelicula(pelicula);
+        agregar.agregarPelicula(pelicula);
         break;
 
       case 2:
-        listar.peliculas(pelicula);
+        listar.listarPeliculas(pelicula);
         break;
 
       case 3:
-        actualizarPelicula(pelicula);
+        actualizar.actualizarPelicula(pelicula);
         break;
 
       case 4:
-        eliminar.peliculas(pelicula);
+        eliminar.eliminar(pelicula);
         break;
 
       case 5:

@@ -1,16 +1,13 @@
 import 'dart:io';
 
-void main() {
-  List<Map<String, dynamic>> peliculas = [
-    {
-      'titulo': 'Matrix',
-      'director': 'Lana Wachowski',
-      'anio': 1999,
-      'genero': 'Ciencia Ficción'
-    }
-  ];
+void actualizarPelicula(List<Map<String, dynamic>> peliculas) {
 
-  print('Películas disponibles');
+  if (peliculas.isEmpty) {
+    print('\nNo hay películas registradas para actualizar.');
+    return;
+  }
+
+  print('\n      PELÍCULAS DISPONIBLES');
 
   for (int i = 0; i < peliculas.length; i++) {
     print(
@@ -23,8 +20,9 @@ void main() {
 
   int? indice;
 
+  // 3. Selección del índice
   while (indice == null) {
-    stdout.write('Ingrese el índice de la película: ');
+    stdout.write('\nIngrese el índice de la película a actualizar: ');
     String entrada = stdin.readLineSync() ?? '';
 
     try {
@@ -33,37 +31,38 @@ void main() {
       if (valor >= 0 && valor < peliculas.length) {
         indice = valor;
       } else {
-        print('Índice fuera de rango');
+        print('❌ Índice fuera de rango.');
       }
     } catch (e) {
-      print('Debe ingresar un número');
+      print('❌ Debe ingresar un número entero válido.');
     }
   }
 
   Map<String, dynamic> pelicula = peliculas[indice!];
 
-  print('\nDatos actuales');
-  print('Título: ${pelicula['titulo']}');
+  print('\nDatos actuales:');
+  print('Título:   ${pelicula['titulo']}');
   print('Director: ${pelicula['director']}');
-  print('Año: ${pelicula['anio']}');
-  print('Género: ${pelicula['genero']}');
+  print('Año:      ${pelicula['anio']}');
+  print('Género:   ${pelicula['genero']}');
 
-  print('\nSi no quiere cambiar un dato, presione ENTER');
+  print('\n(Si no desea modificar un campo, presione ENTER)');
 
+  // Título
   stdout.write('Nuevo título: ');
   String titulo = stdin.readLineSync() ?? '';
-
   if (titulo.trim().isNotEmpty) {
     pelicula['titulo'] = titulo.trim();
   }
 
+  // Director
   stdout.write('Nuevo director: ');
   String director = stdin.readLineSync() ?? '';
-
   if (director.trim().isNotEmpty) {
     pelicula['director'] = director.trim();
   }
 
+  // Año
   while (true) {
     stdout.write('Nuevo año: ');
     String entradaAnio = stdin.readLineSync() ?? '';
@@ -79,23 +78,23 @@ void main() {
         pelicula['anio'] = nuevoAnio;
         break;
       } else {
-        print('El año debe ser mayor que 0');
+        print('❌ El año debe ser mayor que 0.');
       }
     } catch (e) {
-      print('Debe ingresar un número');
+      print('❌ Debe ingresar un número válido.');
     }
   }
 
+  // Género
   stdout.write('Nuevo género: ');
   String genero = stdin.readLineSync() ?? '';
-
   if (genero.trim().isNotEmpty) {
     pelicula['genero'] = genero.trim();
   }
 
-  print('\nPelícula actualizada');
-  print('Título: ${pelicula['titulo']}');
-  print('Director: ${pelicula['director']}');
-  print('Año: ${pelicula['anio']}');
-  print('Género: ${pelicula['genero']}');
+  print('\n✅ Película actualizada correctamente:');
+  print('• Título:   ${pelicula['titulo']}');
+  print('• Director: ${pelicula['director']}');
+  print('• Año:      ${pelicula['anio']}');
+  print('• Género:   ${pelicula['genero']}');
 }
