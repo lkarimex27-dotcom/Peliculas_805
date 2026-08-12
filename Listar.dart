@@ -1,13 +1,10 @@
-//Listar película: Mostrar todos los productos con:
-//● Número de índice
-//● Título
-//● Director
-//● Año de estreno
-//● Género (Ejemplo: Acción, Comedia, Drama, Ciencia Ficción, etc.)
-
 import 'dart:io';
 
 void peliculas(List<Map<String, dynamic>> peliculas) {
+
+  if (peliculas.isEmpty){
+    print('No hay películas');
+  }
   
   for (var i = 0; i < peliculas.length; i++) {
     print('Número de índice: ${peliculas[i]['id']}');
