@@ -1,47 +1,42 @@
-import 'dart:io' show stdin, stdout ;
-import 'Eliminar.dart' as eliminar;
-import 'Listar.dart' as listar;
+import 'dart:io';
 import 'Agregar.dart' as agregar;
+import 'Listar.dart' as listar;
 import 'Actualizar.dart' as actualizar;
+import 'Eliminar.dart' as eliminar;
 
 void main() {
-  List<Map<String, dynamic>> pelicula = [];
+  List<Map<String, dynamic>> peliculas = [];
   int? opcion;
 
   do {
-    print("\nPELICULAS");
-    print("1. Agregar pelicula");
-    print("2. Listar pelicula");
-    print("3. Actualizar pelicula");
-    print("4. Eliminar pelicula");
-    print("5. Salir");
+    print('\n--- MENU PELICULAS ---');
+    print('1. Agregar pelicula');
+    print('2. Listar peliculas');
+    print('3. Actualizar pelicula');
+    print('4. Eliminar pelicula');
+    print('5. Salir');
+    stdout.write('Seleccione una opcion: ');
 
-    stdout.write("Seleccione una opción: ");
-    opcion = int.tryParse(stdin.readLineSync() ?? "");
+    opcion = int.tryParse(stdin.readLineSync() ?? '');
 
     switch (opcion) {
       case 1:
-        agregar.agregarPelicula(pelicula);
+        agregar.agregarPelicula(peliculas);
         break;
-
       case 2:
-        listar.listarPeliculas(pelicula);
+        listar.listarPeliculas(peliculas);
         break;
-
       case 3:
-        actualizar.actualizarPelicula(pelicula);
+        actualizar.actualizarPelicula(peliculas);
         break;
-
       case 4:
-        eliminar.eliminar(pelicula);
+        eliminar.eliminarPelicula(peliculas);
         break;
-
       case 5:
-        print("Programa finalizado.");
+        print('Saliendo del programa...');
         break;
-
       default:
-        print("Opción inválida. Intente nuevamente.");
+        print('Opcion no valida.');
     }
   } while (opcion != 5);
-  }
+}

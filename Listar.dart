@@ -2,17 +2,17 @@ import 'dart:io';
 
 void listarPeliculas(List<Map<String, dynamic>> peliculas) {
   if (peliculas.isEmpty) {
-    print('\nNo hay películas registradas.');
+    print('\nNo hay peliculas registradas.');
     return;
   }
 
-  print('\n      LISTA DE PELÍCULAS');
-  for (var i = 0; i < peliculas.length; i++) {
-    print('------------------------------------');
-    print('Película #${i + 1}'); // Muestra la posición comenzando desde 1
-    print('Título:         ${peliculas[i]['titulo']}');
-    print('Director:       ${peliculas[i]['director']}');
-    print('Año de estreno: ${peliculas[i]['anio']}');
-    print('Género:         ${peliculas[i]['genero']}');
+  print('\n--- LISTA DE PELICULAS ---');
+  for (int i = 0; i < peliculas.length; i++) {
+    print('Indice: $i');
+    print('Titulo: ${peliculas[i]['titulo']}');
+    print('Director: ${peliculas[i]['director']}');
+    print('Ano: ${peliculas[i]['anio']}');
+    print('Genero: ${peliculas[i]['genero']}');
+    print('-----------------------');
   }
 }
