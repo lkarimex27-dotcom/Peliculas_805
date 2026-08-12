@@ -1,10 +1,9 @@
 import 'dart:io';
 
-void main() {
-  List<Map<String, dynamic>> peliculas = [];
+void agregarPelicula(List<Map<String, dynamic>> peliculas) {
+  print('\n      AGREGAR PELÍCULA');
 
   String titulo = '';
-
   while (titulo.trim().isEmpty) {
     stdout.write('Ingrese el título: ');
     titulo = stdin.readLineSync() ?? '';
@@ -15,7 +14,6 @@ void main() {
   }
 
   String director = '';
-
   while (director.trim().isEmpty) {
     stdout.write('Ingrese el director: ');
     director = stdin.readLineSync() ?? '';
@@ -26,7 +24,6 @@ void main() {
   }
 
   int? anio;
-
   while (anio == null) {
     stdout.write('Ingrese el año de estreno: ');
     String entrada = stdin.readLineSync() ?? '';
@@ -40,12 +37,11 @@ void main() {
         print('El año debe ser mayor que 0');
       }
     } catch (e) {
-      print('Debe ingresar un número');
+      print('Debe ingresar un número entero válido');
     }
   }
 
   String genero = '';
-
   while (genero.trim().isEmpty) {
     stdout.write('Ingrese el género: ');
     genero = stdin.readLineSync() ?? '';
@@ -64,9 +60,10 @@ void main() {
 
   peliculas.add(pelicula);
 
-  print('\nPelícula agregada correctamente');
-  print('Título: ${pelicula['titulo']}');
-  print('Director: ${pelicula['director']}');
-  print('Año: ${pelicula['anio']}');
-  print('Género: ${pelicula['genero']}');
+  print('\nPelícula agregada correctamente:');
+  print('• Título:   ${pelicula['titulo']}');
+  print('• Director: ${pelicula['director']}');
+  print('• Año:      ${pelicula['anio']}');
+  print('• Género:   ${pelicula['genero']}');
 }
+
