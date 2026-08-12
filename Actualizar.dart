@@ -1,42 +1,30 @@
 import 'dart:io';
-import 'dart:convert';
 
 void main() {
-  print('      ACTUALIZAR PELÍCULA');
+  List<Map<String, dynamic>> peliculas = [
+    {
+      'titulo': 'Matrix',
+      'director': 'Lana Wachowski',
+      'anio': 1999,
+      'genero': 'Ciencia Ficción'
+    }
+  ];
 
-  // Cargar las películas guardadas
-  List<Map<String, dynamic>> peliculas = cargarPeliculas();
-
-  
-  // VERIFICAR SI HAY PELÍCULAS
-
-  if (peliculas.isEmpty) {
-    print('\n No hay películas registradas.');
-    print('Primero debes agregar una película.');
-    return;
-  }
-
-  // MOSTRAR PELÍCULAS
-
-  print('\nPelículas disponibles:\n');
+  print('Películas disponibles');
 
   for (int i = 0; i < peliculas.length; i++) {
     print(
-      '$i. '
-      '${peliculas[i]['titulo']} | '
-      '${peliculas[i]['director']} | '
-      '${peliculas[i]['anio']} | '
-      '${peliculas[i]['genero']}',
+      '$i. ${peliculas[i]['titulo']} - '
+      '${peliculas[i]['director']} - '
+      '${peliculas[i]['anio']} - '
+      '${peliculas[i]['genero']}'
     );
   }
-
-  // SOLICITAR ÍNDICE
 
   int? indice;
 
   while (indice == null) {
-    stdout.write('\nIngrese el índice de la película a actualizar: ');
-
+    stdout.write('Ingrese el índice de la película: ');
     String entrada = stdin.readLineSync() ?? '';
 
     try {
@@ -45,56 +33,41 @@ void main() {
       if (valor >= 0 && valor < peliculas.length) {
         indice = valor;
       } else {
-        print(' Índice fuera de rango.');
+        print('Índice fuera de rango');
       }
     } catch (e) {
-      print(' Debe ingresar un número entero.');
+      print('Debe ingresar un número');
     }
   }
 
-  // OBTENER PELÍCULA
-
   Map<String, dynamic> pelicula = peliculas[indice!];
 
-  print('        DATOS ACTUALES');
-
+  print('\nDatos actuales');
   print('Título: ${pelicula['titulo']}');
   print('Director: ${pelicula['director']}');
   print('Año: ${pelicula['anio']}');
   print('Género: ${pelicula['genero']}');
 
-  print('       ACTUALIZAR DATOS');
-
-  print('Presione ENTER para conservar el dato anterior.\n');
-
-  // ACTUALIZAR TÍTULO
+  print('\nSi no quiere cambiar un dato, presione ENTER');
 
   stdout.write('Nuevo título: ');
+  String titulo = stdin.readLineSync() ?? '';
 
-  String nuevoTitulo = stdin.readLineSync() ?? '';
-
-  if (nuevoTitulo.trim().isNotEmpty) {
-    pelicula['titulo'] = nuevoTitulo.trim();
+  if (titulo.trim().isNotEmpty) {
+    pelicula['titulo'] = titulo.trim();
   }
-
-  // ACTUALIZAR DIRECTOR
 
   stdout.write('Nuevo director: ');
+  String director = stdin.readLineSync() ?? '';
 
-  String nuevoDirector = stdin.readLineSync() ?? '';
-
-  if (nuevoDirector.trim().isNotEmpty) {
-    pelicula['director'] = nuevoDirector.trim();
+  if (director.trim().isNotEmpty) {
+    pelicula['director'] = director.trim();
   }
-
-  // ACTUALIZAR AÑO
 
   while (true) {
     stdout.write('Nuevo año: ');
-
     String entradaAnio = stdin.readLineSync() ?? '';
 
-    // ENTER = conservar el año anterior
     if (entradaAnio.trim().isEmpty) {
       break;
     }
@@ -106,71 +79,23 @@ void main() {
         pelicula['anio'] = nuevoAnio;
         break;
       } else {
-        print(' El año debe ser mayor que 0.');
+        print('El año debe ser mayor que 0');
       }
     } catch (e) {
-      print(' Debe ingresar un número entero.');
+      print('Debe ingresar un número');
     }
   }
 
-  // ACTUALIZAR GÉNERO
-
   stdout.write('Nuevo género: ');
+  String genero = stdin.readLineSync() ?? '';
 
-  String nuevoGenero = stdin.readLineSync() ?? '';
-
-  if (nuevoGenero.trim().isNotEmpty) {
-    pelicula['genero'] = nuevoGenero.trim();
+  if (genero.trim().isNotEmpty) {
+    pelicula['genero'] = genero.trim();
   }
 
-  // GUARDAR CAMBIOS
-
-  guardarPeliculas(peliculas);
-
-  print('    PELÍCULA ACTUALIZADA');
-
+  print('\nPelícula actualizada');
   print('Título: ${pelicula['titulo']}');
   print('Director: ${pelicula['director']}');
   print('Año: ${pelicula['anio']}');
   print('Género: ${pelicula['genero']}');
-
-  print('\n Actualización realizada correctamente.');
-}
-
-// CARGAR PELÍCULAS
-
-List<Map<String, dynamic>> cargarPeliculas() {
-  File archivo = File('peliculas.json');
-
-  if (!archivo.existsSync()) {
-    return [];
-  }
-
-  try {
-    String contenido = archivo.readAsStringSync();
-
-    if (contenido.trim().isEmpty) {
-      return [];
-    }
-
-    List<dynamic> datos = jsonDecode(contenido);
-
-    return datos
-        .map((pelicula) => Map<String, dynamic>.from(pelicula))
-        .toList();
-  } catch (e) {
-    print(' Error al cargar las películas.');
-    return [];
-  }
-}
-
-
-// GUARDAR PELÍCULAS
-
-void guardarPeliculas(List<Map<String, dynamic>> peliculas) {
-  File archivo = File('peliculas.json');
-
-  String contenido = jsonEncode(peliculas);
-
-  archivo.writeAsStringSync(contenido);
 }
