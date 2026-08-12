@@ -1,30 +1,23 @@
 import 'dart:io';
+import 'dart:convert';
 
 void main() {
-  List<Map<String, dynamic>> peliculas = [
-    {
-      'titulo': 'Avatar',
-      'director': 'James Cameron',
-      'anio': 2009,
-      'genero': 'Ciencia Ficción',
-    },
-    {
-      'titulo': 'Titanic',
-      'director': 'James Cameron',
-      'anio': 1997,
-      'genero': 'Drama',
-    },
-    {
-      'titulo': 'Avengers',
-      'director': 'Anthony Russo',
-      'anio': 2019,
-      'genero': 'Acción',
-    },
-  ];
-
   print('      ACTUALIZAR PELÍCULA');
 
-  // Mostrar películas
+  // Cargar las películas guardadas
+  List<Map<String, dynamic>> peliculas = cargarPeliculas();
+
+  
+  // VERIFICAR SI HAY PELÍCULAS
+
+  if (peliculas.isEmpty) {
+    print('\n No hay películas registradas.');
+    print('Primero debes agregar una película.');
+    return;
+  }
+
+  // MOSTRAR PELÍCULAS
+
   print('\nPelículas disponibles:\n');
 
   for (int i = 0; i < peliculas.length; i++) {
@@ -37,7 +30,8 @@ void main() {
     );
   }
 
-  // Solicitar índice
+  // SOLICITAR ÍNDICE
+
   int? indice;
 
   while (indice == null) {
@@ -58,8 +52,9 @@ void main() {
     }
   }
 
-  // Película seleccionada
-  Map<String, dynamic> pelicula = peliculas[indice];
+  // OBTENER PELÍCULA
+
+  Map<String, dynamic> pelicula = peliculas[indice!];
 
   print('        DATOS ACTUALES');
 
@@ -68,32 +63,38 @@ void main() {
   print('Año: ${pelicula['anio']}');
   print('Género: ${pelicula['genero']}');
 
-  print('        ACTUALIZAR DATOS');
+  print('       ACTUALIZAR DATOS');
 
   print('Presione ENTER para conservar el dato anterior.\n');
 
-  // Actualizar título
+  // ACTUALIZAR TÍTULO
+
   stdout.write('Nuevo título: ');
-  String titulo = stdin.readLineSync() ?? '';
 
-  if (titulo.trim().isNotEmpty) {
-    pelicula['titulo'] = titulo.trim();
+  String nuevoTitulo = stdin.readLineSync() ?? '';
+
+  if (nuevoTitulo.trim().isNotEmpty) {
+    pelicula['titulo'] = nuevoTitulo.trim();
   }
 
-  // Actualizar director
+  // ACTUALIZAR DIRECTOR
+
   stdout.write('Nuevo director: ');
-  String director = stdin.readLineSync() ?? '';
 
-  if (director.trim().isNotEmpty) {
-    pelicula['director'] = director.trim();
+  String nuevoDirector = stdin.readLineSync() ?? '';
+
+  if (nuevoDirector.trim().isNotEmpty) {
+    pelicula['director'] = nuevoDirector.trim();
   }
 
-  // Actualizar año
+  // ACTUALIZAR AÑO
+
   while (true) {
     stdout.write('Nuevo año: ');
+
     String entradaAnio = stdin.readLineSync() ?? '';
 
-    // ENTER = conservar dato anterior
+    // ENTER = conservar el año anterior
     if (entradaAnio.trim().isEmpty) {
       break;
     }
@@ -112,13 +113,19 @@ void main() {
     }
   }
 
-  // Actualizar género
-  stdout.write('Nuevo género: ');
-  String genero = stdin.readLineSync() ?? '';
+  // ACTUALIZAR GÉNERO
 
-  if (genero.trim().isNotEmpty) {
-    pelicula['genero'] = genero.trim();
+  stdout.write('Nuevo género: ');
+
+  String nuevoGenero = stdin.readLineSync() ?? '';
+
+  if (nuevoGenero.trim().isNotEmpty) {
+    pelicula['genero'] = nuevoGenero.trim();
   }
+
+  // GUARDAR CAMBIOS
+
+  guardarPeliculas(peliculas);
 
   print('    PELÍCULA ACTUALIZADA');
 
@@ -128,4 +135,42 @@ void main() {
   print('Género: ${pelicula['genero']}');
 
   print('\n Actualización realizada correctamente.');
+}
+
+// CARGAR PELÍCULAS
+
+List<Map<String, dynamic>> cargarPeliculas() {
+  File archivo = File('peliculas.json');
+
+  if (!archivo.existsSync()) {
+    return [];
+  }
+
+  try {
+    String contenido = archivo.readAsStringSync();
+
+    if (contenido.trim().isEmpty) {
+      return [];
+    }
+
+    List<dynamic> datos = jsonDecode(contenido);
+
+    return datos
+        .map((pelicula) => Map<String, dynamic>.from(pelicula))
+        .toList();
+  } catch (e) {
+    print(' Error al cargar las películas.');
+    return [];
+  }
+}
+
+
+// GUARDAR PELÍCULAS
+
+void guardarPeliculas(List<Map<String, dynamic>> peliculas) {
+  File archivo = File('peliculas.json');
+
+  String contenido = jsonEncode(peliculas);
+
+  archivo.writeAsStringSync(contenido);
 }
