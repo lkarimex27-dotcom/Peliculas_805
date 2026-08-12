@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'dart:convert';
 
 void main() {
-  List<Map<String, dynamic>> peliculas = [];
-
   print('       AGREGAR PELÍCULA');
 
-  // Título
+  // Leer las películas que ya existen
+  List<Map<String, dynamic>> peliculas = cargarPeliculas();
+
+  // TÍTULO
+
   String titulo = '';
 
   while (titulo.trim().isEmpty) {
@@ -17,7 +20,8 @@ void main() {
     }
   }
 
-  // Director
+  // DIRECTOR
+
   String director = '';
 
   while (director.trim().isEmpty) {
@@ -29,11 +33,14 @@ void main() {
     }
   }
 
-  // Año
+  
+  // AÑO
+
   int? anio;
 
   while (anio == null) {
     stdout.write('Ingrese el año de estreno: ');
+
     String entrada = stdin.readLineSync() ?? '';
 
     if (entrada.trim().isEmpty) {
@@ -54,7 +61,8 @@ void main() {
     }
   }
 
-  // Género
+  // GÉNERO
+
   String genero = '';
 
   while (genero.trim().isEmpty) {
@@ -66,19 +74,65 @@ void main() {
     }
   }
 
-  // Guardar película
-  peliculas.add({
+  // CREAR MAPA DE LA PELÍCULA
+
+  Map<String, dynamic> pelicula = {
     'titulo': titulo.trim(),
     'director': director.trim(),
     'anio': anio,
     'genero': genero.trim(),
-  });
+  };
 
-  print('\n Película agregada correctamente.');
+  // Agregar la película a la lista
+  peliculas.add(pelicula);
 
-  print('\nDatos de la película:');
-  print('Título: ${peliculas[0]['titulo']}');
-  print('Director: ${peliculas[0]['director']}');
-  print('Año: ${peliculas[0]['anio']}');
-  print('Género: ${peliculas[0]['genero']}');
+  // Guardar la lista
+  guardarPeliculas(peliculas);
+
+  print(' PELÍCULA AGREGADA');
+
+  print('Título: ${pelicula['titulo']}');
+  print('Director: ${pelicula['director']}');
+  print('Año: ${pelicula['anio']}');
+  print('Género: ${pelicula['genero']}');
+
+  print('\n La película quedó guardada correctamente.');
+}
+
+// CARGAR PELÍCULAS
+
+List<Map<String, dynamic>> cargarPeliculas() {
+  File archivo = File('peliculas.json');
+
+  // Si el archivo no existe, devuelve una lista vacía
+  if (!archivo.existsSync()) {
+    return [];
+  }
+
+  try {
+    String contenido = archivo.readAsStringSync();
+
+    if (contenido.trim().isEmpty) {
+      return [];
+    }
+
+    List<dynamic> datos = jsonDecode(contenido);
+
+    return datos
+        .map((pelicula) => Map<String, dynamic>.from(pelicula))
+        .toList();
+  } catch (e) {
+    print(' Error al cargar las películas.');
+    return [];
+  }
+}
+
+// GUARDAR PELÍCULAS
+
+void guardarPeliculas(List<Map<String, dynamic>> peliculas) {
+  File archivo = File('peliculas.json');
+
+  String contenido = jsonEncode(peliculas);
+
+  archivo.writeAsStringSync(contenido);
 }
